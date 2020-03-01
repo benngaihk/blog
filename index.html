@@ -48,35 +48,42 @@
 	appId: "1:787267457183:web:518a8e67c5c9fb39a4d2aa",
 	measurementId: "G-SLKHQBJ5TS"
 	};
-	// Initialize Firebase
-	firebase.initializeApp(firebaseConfig);
 
-</script>
+	var db = firebase.firestore();
 
-<script>
+	
+
   $(init);
 
 	function init()
 	{
+		// Initialize Firebase
+		firebase.initializeApp(firebaseConfig);
 		initBtn();
 	}
 
 	function initBtn()
 	{
 		$('#btn-login').click(function() {
-
-			console.log("here")
-
 			var provider = new firebase.auth.GoogleAuthProvider();
 			provider.setCustomParameters({
 			  'login_hint': 'user@example.com'
 			});
 			firebase.auth().signInWithPopup(provider).then(function(result) {
-			// This gives you a Google Access Token. You can use it to access the Google API.
-			var token = result.credential.accessToken;
-			// The signed-in user info.
-			var user = result.user;
-			// ...
+				// This gives you a Google Access Token. You can use it to access the Google API.
+				var token = result.credential.accessToken;
+				// The signed-in user info.
+				var user = result.user;
+				// ...
+				console.log(user);
+
+				db.collection("users").get().then((querySnapshot) => {
+				    querySnapshot.forEach((doc) => {
+				        console.log(`${doc.id} => ${doc.data()}`);
+				    });
+				});
+
+
 			}).catch(function(error) {
 				// Handle Errors here.
 				var errorCode = error.code;
