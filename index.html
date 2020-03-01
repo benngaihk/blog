@@ -49,16 +49,19 @@
 	measurementId: "G-SLKHQBJ5TS"
 	};
 
+	// Initialize Firebase
+	firebase.initializeApp(firebaseConfig);
+
 	var db = firebase.firestore();
 
+	
 	
 
   $(init);
 
 	function init()
 	{
-		// Initialize Firebase
-		firebase.initializeApp(firebaseConfig);
+		
 		initBtn();
 	}
 
