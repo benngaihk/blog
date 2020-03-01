@@ -44,8 +44,6 @@ function initBtn()
 			var token = result.credential.accessToken;
 			// The signed-in user info.
 			var user = result.user;
-			// ...
-			console.log(user);
 
 			db.collection("users").doc(user.email).get().then(function(doc) {
 			    if (doc.exists) {
@@ -109,7 +107,7 @@ function initBtn()
 		let parentId = $(parent).attr('id');
 		let textContent = $(parent.find('.text-content'));
 		let text = $(textContent).html();
-		db.collection("content").doc(parentId).set({
+		db.collection(currDate).doc(parentId).set({
 			containerId: parentId,
 		    text: text,
 		})
