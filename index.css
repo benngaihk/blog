@@ -3,6 +3,11 @@
 	cursor: pointer;
 }
 
+.btn-container
+{
+	text-align: right;
+}
+
 
 .btn-edit-container
 {

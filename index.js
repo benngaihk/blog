@@ -29,7 +29,6 @@ function init()
 
 function initBtn()
 {
-	
 
 	$('#btn-login').click(function() {
 		var provider = new firebase.auth.GoogleAuthProvider();
@@ -37,6 +36,8 @@ function initBtn()
 		  'login_hint': 'user@example.com'
 		});
 		firebase.auth().signInWithPopup(provider).then(function(result) {
+			$('.btn-logout').removeClass("hidden");
+			$('.btn-login').addClass('hidden');
 			// This gives you a Google Access Token. You can use it to access the Google API.
 			var token = result.credential.accessToken;
 			// The signed-in user info.
@@ -44,11 +45,10 @@ function initBtn()
 			// ...
 			console.log(user);
 
-			db.collection("users").get().then((querySnapshot) => {
+			db.collection("users").doc(user.email).get().then((querySnapshot) => {
 			    querySnapshot.forEach((doc) => {
 			        let userObj = doc.data();
-			        let email = userObj.email;
-			        if(email == user.email && userObj.role == 1)
+			        if(userObj.role == 1)
 			        {
 			        	openEditMode();
 			        }
@@ -58,6 +58,8 @@ function initBtn()
 			        }
 			    });
 			});
+
+
 
 
 		}).catch(function(error) {
@@ -70,6 +72,16 @@ function initBtn()
 			var credential = error.credential;
 			// ...
 			console.log(error);
+		});
+	});
+
+	$('#btn-logout').click(function() {
+		firebase.auth().signOut().then(function() {
+			// Sign-out successful.
+			$('.btn-logout').addClass("hidden");
+			$('.btn-login').removeClass('hidden');
+		}).catch(function(error) {
+			// An error happened.
 		});
 	});
 
