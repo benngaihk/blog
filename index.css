@@ -11,7 +11,7 @@
 
 .btn-edit-container
 {
-	text-content
+	text-align: right;
 }
 
 .btn-edit
@@ -28,7 +28,6 @@
 {
 	text-align: center;
 }
-
 
 .hidden
 {

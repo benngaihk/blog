@@ -134,12 +134,13 @@ function initData()
 			}
 		});
 		currDate = maxInDateArr(currDateArr);
-		
 		db.collection(currDate).get().then((querySnapshot) => {
 		    querySnapshot.forEach((doc) => {
+		    	
 		        let contentObj = doc.data();
-		        let containerId = contentObj.containerId;
+		        let containerId = doc.id;
 		        let text = contentObj.text;
+		        console.log(containerId);
 		        let container = $("#"+containerId);
 		        $(container.find(".text-content")).html(text);
 		    });
