@@ -48,7 +48,7 @@ function initBtn()
 			    querySnapshot.forEach((doc) => {
 			        let userObj = doc.data();
 			        let email = userObj.email;
-			        if(email = user.email && userObj.role == 1)
+			        if(email == user.email && userObj.role == 1)
 			        {
 			        	openEditMode();
 			        }
