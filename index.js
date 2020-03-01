@@ -17,6 +17,8 @@ firebase.initializeApp(firebaseConfig);
 var db = firebase.firestore();
 
 var editMode = false;
+var currDateArr = [];
+var currDate;
 
 $(init);
 
@@ -125,15 +127,30 @@ function initBtn()
 
 function initData()
 {
-	db.collection("content").get().then((querySnapshot) => {
-	    querySnapshot.forEach((doc) => {
-	        let contentObj = doc.data();
-	        let containerId = contentObj.containerId;
-	        let text = contentObj.text;
-	        let container = $("#"+containerId);
-	        $(container.find(".text-content")).html(text);
-	    });
+	db.collection("meta").get().then(querySnapshot => {
+		querySnapshot.forEach((doc) => {
+			let metaObj = doc.data();
+			if(metaObj.visible)
+			{
+				currDateArr.push(doc.id);
+			}
+		});
+		currDate = maxInDateArr(currDateArr);
+		
+		db.collection(currDate).get().then((querySnapshot) => {
+		    querySnapshot.forEach((doc) => {
+		        let contentObj = doc.data();
+		        let containerId = contentObj.containerId;
+		        let text = contentObj.text;
+		        let container = $("#"+containerId);
+		        $(container.find(".text-content")).html(text);
+		    });
+		});
+		
 	});
+
+
+	
 }
 
 function openEditMode()
@@ -145,4 +162,20 @@ function closeEditMode()
 {
 	editMode = false;
 	$(".btn-edit-container").addClass("hidden");
+}
+
+function maxInDateArr(dateArr){
+	let dataTimeArr = [];
+
+	dateArr.forEach((dateStr) => {
+		let dateTime = new Date(dateStr).getTime();
+		dataTimeArr.push(dateTime);
+	});
+	let maxDateTime = dataTimeArr.sort((a,b) => {return b-a;})[0];
+	let date = new Date();
+	date.setTime(maxDateTime);
+    let year = date.getFullYear();
+    let month = date.getMonth();
+   	
+	return year+month +'';
 }

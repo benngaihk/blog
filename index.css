@@ -11,7 +11,7 @@
 
 .btn-edit-container
 {
-	text-align: right;
+	text-content
 }
 
 .btn-edit
@@ -22,6 +22,11 @@
 .btn-confirm
 {
 	display: inline-block;
+}
+
+.text-content
+{
+	text-align: center;
 }
 
 
