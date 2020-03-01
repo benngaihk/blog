@@ -45,8 +45,9 @@ function initBtn()
 			// ...
 			console.log(user);
 
-			db.collection("users").doc(user.email).get().then((querySnapshot) => {
-			    querySnapshot.forEach((doc) => {
+			db.collection("users").doc(user.email).get().then(function(doc) {
+			    if (doc.exists) {
+			        console.log("Document data:", doc.data());
 			        let userObj = doc.data();
 			        if(userObj.role == 1)
 			        {
@@ -56,9 +57,16 @@ function initBtn()
 			        {
 			        	closeEditMode();
 			        }
-			    });
-			});
 
+			    } else {
+			        // doc.data() will be undefined in this case
+			        console.log("No such document!");
+
+			        closeEditMode();
+			    }
+			}).catch(function(error) {
+			    console.log("Error getting document:", error);
+			});
 
 
 
