@@ -6,14 +6,7 @@
 
 <script type="text/javascript" src="jquery-1.12.2.min.js"></script>
 
-<style type="text/css">
-	
-	.btn
-	{
-
-	}
-
-</style>
+<link rel='stylesheet' type="text/css" href="index.css" />
 
 </head>
 <body>
@@ -22,6 +15,17 @@
 	<button id='btn-login'>
 		login
 	</button>
+
+	<div id='text1' class='text-container'>
+		<div class="btn-edit-container hidden">
+			<button class='btn-edit'>Edit</button>
+			<button class='btn-confirm hidden'>Confirm</button>
+		</div>
+		
+		<div class='text-content' contenteditable="false">
+			
+		</div>
+	</div>
 
 
 
@@ -34,72 +38,7 @@
 <!-- Add Firebase products that you want to use -->
 <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
+<script src="index.js"></script>
 
-
-<script>
-	// Your web app's Firebase configuration
-	var firebaseConfig = {
-	apiKey: "AIzaSyCcSfoCjlWXVeIWRg9bos1Vfe2Qi7Jjvug",
-	authDomain: "blog-e1804.firebaseapp.com",
-	databaseURL: "https://blog-e1804.firebaseio.com",
-	projectId: "blog-e1804",
-	storageBucket: "blog-e1804.appspot.com",
-	messagingSenderId: "787267457183",
-	appId: "1:787267457183:web:518a8e67c5c9fb39a4d2aa",
-	measurementId: "G-SLKHQBJ5TS"
-	};
-
-	// Initialize Firebase
-	firebase.initializeApp(firebaseConfig);
-
-	var db = firebase.firestore();
-
-	
-	
-
-  $(init);
-
-	function init()
-	{
-		
-		initBtn();
-	}
-
-	function initBtn()
-	{
-		$('#btn-login').click(function() {
-			var provider = new firebase.auth.GoogleAuthProvider();
-			provider.setCustomParameters({
-			  'login_hint': 'user@example.com'
-			});
-			firebase.auth().signInWithPopup(provider).then(function(result) {
-				// This gives you a Google Access Token. You can use it to access the Google API.
-				var token = result.credential.accessToken;
-				// The signed-in user info.
-				var user = result.user;
-				// ...
-				console.log(user);
-
-				db.collection("users").get().then((querySnapshot) => {
-				    querySnapshot.forEach((doc) => {
-				        console.log(`${doc.id} => ${doc.data()}`);
-				    });
-				});
-
-
-			}).catch(function(error) {
-				// Handle Errors here.
-				var errorCode = error.code;
-				var errorMessage = error.message;
-				// The email of the user's account used.
-				var email = error.email;
-				// The firebase.auth.AuthCredential type that was used.
-				var credential = error.credential;
-				// ...
-				console.log(error);
-			});
-		})
-	}
-</script>
 </body>
 </html>

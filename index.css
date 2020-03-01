@@ -1,0 +1,26 @@
+.btn
+{
+	cursor: pointer;
+}
+
+
+.btn-container
+{
+	text-align: right;
+}
+
+.btn-edit
+{
+	display: inline-block;
+}
+
+.btn-confirm
+{
+	display: inline-block;
+}
+
+
+.hidden
+{
+    display: none!important;
+}
