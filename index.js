@@ -36,8 +36,8 @@ function initBtn()
 		  'login_hint': 'user@example.com'
 		});
 		firebase.auth().signInWithPopup(provider).then(function(result) {
-			$('.btn-logout').removeClass("hidden");
-			$('.btn-login').addClass('hidden');
+			$('#btn-logout').removeClass("hidden");
+			$('#btn-login').addClass('hidden');
 			// This gives you a Google Access Token. You can use it to access the Google API.
 			var token = result.credential.accessToken;
 			// The signed-in user info.
@@ -86,8 +86,8 @@ function initBtn()
 	$('#btn-logout').click(function() {
 		firebase.auth().signOut().then(function() {
 			// Sign-out successful.
-			$('.btn-logout').addClass("hidden");
-			$('.btn-login').removeClass('hidden');
+			$('#btn-logout').addClass("hidden");
+			$('#btn-login').removeClass('hidden');
 		}).catch(function(error) {
 			// An error happened.
 		});
