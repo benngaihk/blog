@@ -166,6 +166,7 @@ function initData()
 			}
 		});
 		currDate = maxInDateArr(currDateArr);
+		$(".selector-version").val(currDate);
 		loadContentData()
 	});
 }
