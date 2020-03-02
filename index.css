@@ -15,6 +15,11 @@ body
 	text-align: right;
 }
 
+.selector-version
+{
+	position: absolute;
+    top: 11px;
+}
 
 .btn-edit-container
 {

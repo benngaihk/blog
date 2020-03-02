@@ -112,6 +112,11 @@ function initBtn()
 		});
 	});
 
+	$(".selector-version").change(function() {
+		currDate = $(this).val();
+		loadContentData();
+	});
+
 	$(".btn-edit").click(function() {
 		//$(this).addClass("hidden");
 		let parent = $(this).closest(".text-container");
@@ -139,7 +144,7 @@ function initBtn()
 		    //$(btnEdit).removeClass("hidden");
 		    $(".editor-popup").addClass("hidden");
 		    $(".text-container-list").removeClass("hidden");
-		    initData();
+		    loadContentData();
 		})
 		.catch(function(error) {
 		    console.error("Error writing document: ", error);
@@ -149,28 +154,35 @@ function initBtn()
 
 function initData()
 {
+	currDateArr = [];
+	$(".selector-version").empty();
 	db.collection("meta").get().then(querySnapshot => {
 		querySnapshot.forEach((doc) => {
 			let metaObj = doc.data();
 			if(metaObj.visible)
 			{
 				currDateArr.push(doc.id);
+				$(".selector-version").append(new Option(doc.id, doc.id));
 			}
 		});
 		currDate = maxInDateArr(currDateArr);
-		db.collection(currDate).get().then((querySnapshot) => {
-		    querySnapshot.forEach((doc) => {
-		        let contentObj = doc.data();
-		        let containerId = doc.id;
-		        let text = contentObj.text;
-		        console.log(containerId);
-		        let container = $("#"+containerId);
-		        $(container.find(".text-content")).html(text);
-		    });
-		});
-		
+		loadContentData()
 	});
+}
 
+function loadContentData()
+{
+	$(".text-content").empty();
+	db.collection(currDate).get().then((querySnapshot) => {
+	    querySnapshot.forEach((doc) => {
+	        let contentObj = doc.data();
+	        let containerId = doc.id;
+	        let text = contentObj.text;
+	        console.log(containerId);
+	        let container = $("#"+containerId);
+	        $(container.find(".text-content")).html(text);
+	    });
+	});
 }
 
 function openEditMode()
