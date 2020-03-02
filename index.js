@@ -19,14 +19,33 @@ var db = firebase.firestore();
 var editMode = false;
 var currDateArr = [];
 var currDate;
+var editor;
+var currContainerId;
 
 $(init);
 
 function init()
 {
 	
+	initEditor();
 	initBtn();
 	initData();
+}
+
+function initEditor()
+{
+	ClassicEditor
+	    .create( document.querySelector( '#editor' ), {
+	        toolbar: [
+	            'heading', 'bulletedList', 'numberedList', 'undo', 'redo'
+	        ]
+	    })
+	    .then( newEditor => {
+	        editor = newEditor;
+	    } )
+	    .catch( error => {
+	        console.error( error );
+	    } );
 }
 
 function initBtn()
@@ -94,28 +113,33 @@ function initBtn()
 	});
 
 	$(".btn-edit").click(function() {
-		$(this).addClass("hidden");
+		//$(this).addClass("hidden");
 		let parent = $(this).closest(".text-container");
+		currContainerId = $(parent).attr('id');
 		$(parent.find(".btn-confirm")).removeClass("hidden");
-		$(parent.find('.text-content')).attr("contenteditable", true);
+		let html = $(parent.find('.text-content')).html();
+		editor.setData(html);
+		$(".editor-popup").removeClass("hidden");
+		$(".text-container-list").addClass("hidden");
 	});
 
-	$(".btn-confirm").click(function() {
-		let btnConfirm = $(this);
-		let parent = $(this).closest(".text-container");
+	$(".btn-editor-confirm").click(function() {
+		let parent = $("#"+currContainerId);
 		let btnEdit = $(parent.find(".btn-edit"));
 		let parentId = $(parent).attr('id');
 		let textContent = $(parent.find('.text-content'));
-		let text = $(textContent).html();
+		let text = editor.getData();
 		db.collection(currDate).doc(parentId).set({
-			containerId: parentId,
 		    text: text,
 		})
 		.then(function() {
 		    console.log("Document successfully written!");
-		    $(btnConfirm).addClass("hidden");
-		    $(textContent).attr("contenteditable", false);
-		    $(btnEdit).removeClass("hidden");
+		    //$(btnConfirm).addClass("hidden");
+		    //$(textContent).attr("contenteditable", false);
+		    //$(btnEdit).removeClass("hidden");
+		    $(".editor-popup").addClass("hidden");
+		    $(".text-container-list").removeClass("hidden");
+		    initData();
 		})
 		.catch(function(error) {
 		    console.error("Error writing document: ", error);
@@ -136,7 +160,6 @@ function initData()
 		currDate = maxInDateArr(currDateArr);
 		db.collection(currDate).get().then((querySnapshot) => {
 		    querySnapshot.forEach((doc) => {
-		    	
 		        let contentObj = doc.data();
 		        let containerId = doc.id;
 		        let text = contentObj.text;
@@ -148,14 +171,13 @@ function initData()
 		
 	});
 
-
-	
 }
 
 function openEditMode()
 {
 	editMode = true;
 	$(".btn-edit-container").removeClass("hidden");
+	$(".btn-add").removeClass("hidden");
 }
 function closeEditMode()
 {
